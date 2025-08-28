@@ -23,6 +23,7 @@ Board::Board(Player* player1, Player* player2)
 		for (int col = 0; col < BOARD_SIZE; col++)
 		{
 			switch (row) {
+			/*
 			case Row::SecondRow:
 				_brd[row][col] = new Pawn(player1, row, col, this);
 				break;
@@ -30,6 +31,7 @@ Board::Board(Player* player1, Player* player2)
 				_brd[row][col] = new Pawn(player2, row, col, this);
 				break;
 				// There is no pieces in rows 3-6 when we start the game
+			*/
 			default:
 				_brd[row][col] = new NullPiece(row, col);
 			}
@@ -43,26 +45,39 @@ Board::Board(Player* player1, Player* player2)
 			case Col::FirstCol:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
 				break;
+			/*
 			case Col::SecondCol:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;
 			case Col::ThirdCol:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
+			*/
+			/*
 			case Col::ForthCol:
 				_brd[row.first][col] = new Queen(row.second, row.first, col, this);
 				break;
+			*/
 			case Col::FifthCol:
-				_brd[row.first][col] = new King(row.second, row.first, col, this);
+			{
+				King* kng = new King(row.second, row.first, col, this);
+				_brd[row.first][col] = kng;
+				row.second->setKing(kng);
 				break;
+			}
+			/*
 			case Col::SixthCol:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
-				break;
+				break;		
 			case Col::SeventhCol:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
+			*/
 			case Col::EighthCol:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
+				break;
+			default:
+				_brd[row.first][col] = new NullPiece(row.first, col);
 				break;
 			}
 		}
@@ -143,13 +158,23 @@ void Board::Move(int srcRow, int srcCol, int dstRow, int dstCol)
 	// In case No Piece was allocated to this square
 	if (!_brd[dstRow][dstCol]) throw std::invalid_argument("No piece was allocated to this square");
 
-	delete  _brd[dstRow][dstCol];
+	this->_lastPiece = _brd[dstRow][dstCol];
 	_brd[srcRow][srcCol]->setPosition(dstRow, dstCol);
 	_brd[dstRow][dstCol] = _brd[srcRow][srcCol];
 	_brd[srcRow][srcCol] = new NullPiece(srcRow, srcCol);
+
+
+	this->_lastSrcRow = srcRow;
+	this->_lastSrcCol = srcCol;
+	this->_lastDstRow = dstRow;
+	this->_lastDstCol = dstCol;
 
 }
 
 void Board::undoLastMove()
 {
+	delete _brd[_lastSrcRow][_lastSrcCol];
+	_brd[_lastDstRow][_lastDstCol]->setPosition(_lastSrcRow, _lastSrcCol);
+	_brd[_lastSrcRow][_lastSrcCol] = _brd[_lastDstRow][_lastDstCol];
+	_brd[_lastDstRow][_lastDstCol] = this->_lastPiece;
 }

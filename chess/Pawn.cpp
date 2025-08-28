@@ -12,9 +12,8 @@ Pawn::Pawn(Player* player, int row, int col, Board* brd) : Piece(player, 'p', ro
 
 bool Pawn::isLegalMove(int dstRow, int dstCol) const
 {
-	//	Pawns can only move on same column
+	//	Pawns can only move on same column (unless eat situation and en passo)
 	if (_col == dstCol) {
-		char curSign = getSign();
 		int distRows = dstRow - _row;
 		int absDistRows = std::abs(distRows);
 		int isJumpBigger = (absDistRows > Pawn::MAX_JUMP_PAWN); // can max jump 2 squares (depending on where pawn is located)
@@ -38,3 +37,4 @@ bool Pawn::isLegalMove(int dstRow, int dstCol) const
 	}
 	return false;
 }
+

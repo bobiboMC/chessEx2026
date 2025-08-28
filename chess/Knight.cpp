@@ -4,7 +4,7 @@ Knight::Knight(Player* player, int row, int col, Board* brd) : Piece(player, 'n'
 {
 }
 
-bool Knight::isLegalMove(int, int) const
+bool Knight::isLegalMove(int dstRow, int dstCol) const
 {
 	return false;
 }

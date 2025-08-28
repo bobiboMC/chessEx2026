@@ -40,7 +40,7 @@ void Piece::setPosition(int row, int col)
 bool Piece::isWayFree(int dstRow, int dstCol) const
 {
 	Piece** matBoard = _brd->getBoard();
-	Piece* currPiece = NULL;
+	Piece* currPiece = nullptr;
 	int  i,j;
 	// move on the col only
 	if (_row == dstRow)
@@ -53,7 +53,7 @@ bool Piece::isWayFree(int dstRow, int dstCol) const
 			currPiece = *(matBoard  + _row * BOARD_SIZE + j);
 
 			// if there is player that own the piece
-			if (currPiece->getPlayer() != NULL)
+			if (currPiece->getPlayer() != nullptr)
 			{
 				return false;
 			}
