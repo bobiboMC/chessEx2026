@@ -27,17 +27,28 @@ bool King::inCheck()
 			Piece** matBoard = _brd->getBoard();
 			Piece* currPiece = nullptr;
 			currPiece = *(matBoard + row * BOARD_SIZE + col);
+			if (std::tolower(currPiece->getSign()) == 'b')
+			{
+
+			}
 			// check if the piece is owned by the other player
 			// also check if piece is not NullPiece
 			if (currPiece->getPlayer() && currPiece->getPlayer()->isWhite() != getPlayer()->isWhite())
 			{
 				//if Rooks doing check
-				if (_row == row || _col == col) {
+				if (_row == row || _col == col)
+				{
 					if (std::tolower(currPiece->getSign()) == 'r')
 						return true;
+				}
+				//if Bishops doing check
+				else if (std::abs(col - _col) == std::abs(row - _row))
+				{
+					if (std::tolower(currPiece->getSign()) == 'b')
+						return true;
+				}
 				
 			}
-		}
 	}
 	return false;
 }
