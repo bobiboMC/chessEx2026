@@ -1,5 +1,6 @@
 #include "King.h"
 #include <cctype>
+#include "Knight.h"
 King::King(Player* player, int row, int col, Board* brd) : Piece(player, 'k', row, col, brd)
 {
 }
@@ -27,10 +28,10 @@ bool King::inCheck()
 			Piece** matBoard = _brd->getBoard();
 			Piece* currPiece = nullptr;
 			currPiece = *(matBoard + row * BOARD_SIZE + col);
-			if (std::tolower(currPiece->getSign()) == 'b')
-			{
-
-			}
+			int distRows = row - _row;
+			int distCols = col - _col;
+			int absDistRows = std::abs(distRows);
+			int absDistCols = std::abs(distCols);
 			// check if the piece is owned by the other player
 			// also check if piece is not NullPiece
 			if (currPiece->getPlayer() && currPiece->getPlayer()->isWhite() != getPlayer()->isWhite())
@@ -38,16 +39,18 @@ bool King::inCheck()
 				//if Rooks doing check
 				if (_row == row || _col == col)
 				{
-					if (std::tolower(currPiece->getSign()) == 'r')
+					if (std::tolower(currPiece->getSign()) == 'r' && isWayFree(row, col))
 						return true;
 				}
 				//if Bishops doing check
-				else if (std::abs(col - _col) == std::abs(row - _row))
+				else if (absDistCols == absDistRows && isWayFree(row, col))
 				{
 					if (std::tolower(currPiece->getSign()) == 'b')
 						return true;
 				}
-				
+				else if (absDistCols + absDistRows == Knight::SUM_DIST_ROW_COL && absDistRows != 0 && absDistCols != 0 && isWayFree(row, col))
+					if (std::tolower(currPiece->getSign()) == 'n')
+						return true;
 			}
 	}
 	return false;

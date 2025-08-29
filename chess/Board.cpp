@@ -48,11 +48,9 @@ Board::Board(Player* player1, Player* player2)
 			case Col::SecondCol:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;
-			/*
 			case Col::ThirdCol:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
-			*/
 			/*
 			case Col::ForthCol:
 				_brd[row.first][col] = new Queen(row.second, row.first, col, this);
@@ -68,11 +66,9 @@ Board::Board(Player* player1, Player* player2)
 			case Col::SixthCol:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;		
-			/*
 			case Col::SeventhCol:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
-			*/
 			case Col::EighthCol:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
 				break;
