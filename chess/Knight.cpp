@@ -10,12 +10,12 @@ bool Knight::isLegalMove(int dstRow, int dstCol) const
 	int distCols = dstCol - _col;
 	int absDistRows = std::abs(distRows);
 	int absDistCols = std::abs(distCols);
-	int isJumpLegal = (absDistRows + absDistCols == Knight::SUM_DIST_ROW_COL) && absDistRows != 0 && absDistCols != 0;
+	bool absDistColss = std::abs(distCols);
+	bool isJumpLegal = (absDistRows + absDistCols == Knight::SUM_DIST_ROW_COL) && absDistRows != 0 && absDistCols != 0;
 	//	Knights can only jump like L shape (for example: two square down one square left/right
 	if (isJumpLegal) {
 		// Knights can move safely
-		if (isWayFree(dstRow, dstCol))
-			return true;
+		return true;
 	}
 	return false;
 }

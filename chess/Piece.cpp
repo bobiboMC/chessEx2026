@@ -73,7 +73,7 @@ bool Piece::isWayFree(int dstRow, int dstCol) const
 			currPiece = *(matBoard + i * BOARD_SIZE + _col);
 
 			// if there is player that own the piece
-			if (currPiece->getPlayer() != NULL)
+			if (currPiece->getPlayer() != nullptr)
 			{
 				return false;
 			}

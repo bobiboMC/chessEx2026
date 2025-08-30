@@ -55,7 +55,7 @@ bool King::inCheck()
 						return true;
 				}
 				//if Knights doing check
-				else if (absDistCols + absDistRows == Knight::SUM_DIST_ROW_COL && absDistRows != 0 && absDistCols != 0 && isWayFree(row, col))
+				else if (absDistCols + absDistRows == Knight::SUM_DIST_ROW_COL && absDistRows != 0 && absDistCols != 0)
 				{
 					if (std::tolower(currPiece->getSign()) == 'n')
 						return true;

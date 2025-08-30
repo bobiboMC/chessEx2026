@@ -10,7 +10,7 @@ bool Bishop::isLegalMove(int dstRow, int dstCol) const
 	int distCols = dstCol - _col;
 	int absDistRows = std::abs(distRows);
 	int absDistCols = std::abs(distCols);
-	int isJumpLegal = absDistRows == absDistCols;
+	bool isJumpLegal = absDistRows == absDistCols;
 	//	Bishops can only move on diagonal
 	if (isJumpLegal) {
 		// Bishops can move safely

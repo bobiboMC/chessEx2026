@@ -23,7 +23,6 @@ Board::Board(Player* player1, Player* player2)
 		for (int col = 0; col < BOARD_SIZE; col++)
 		{
 			switch (row) {
-			/*
 			case Row::SecondRow:
 				_brd[row][col] = new Pawn(player1, row, col, this);
 				break;
@@ -31,7 +30,6 @@ Board::Board(Player* player1, Player* player2)
 				_brd[row][col] = new Pawn(player2, row, col, this);
 				break;
 				// There is no pieces in rows 3-6 when we start the game
-			*/
 			default:
 				_brd[row][col] = new NullPiece(row, col);
 			}
