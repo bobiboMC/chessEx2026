@@ -36,6 +36,12 @@ bool King::inCheck()
 			// also check if piece is not NullPiece
 			if (currPiece->getPlayer() && currPiece->getPlayer()->isWhite() != getPlayer()->isWhite())
 			{
+				//if Queen doing check
+				if ((_row == row || _col == col || absDistCols == absDistRows) && isWayFree(row, col))
+				{
+					if (std::tolower(currPiece->getSign()) == 'q')
+						return true;
+				}
 				//if Rooks doing check
 				if (_row == row || _col == col)
 				{
@@ -43,14 +49,18 @@ bool King::inCheck()
 						return true;
 				}
 				//if Bishops doing check
-				else if (absDistCols == absDistRows && isWayFree(row, col))
+				if (absDistCols == absDistRows && isWayFree(row, col))
 				{
 					if (std::tolower(currPiece->getSign()) == 'b')
 						return true;
 				}
+				//if Knights doing check
 				else if (absDistCols + absDistRows == Knight::SUM_DIST_ROW_COL && absDistRows != 0 && absDistCols != 0 && isWayFree(row, col))
+				{
 					if (std::tolower(currPiece->getSign()) == 'n')
 						return true;
+				}
+
 			}
 	}
 	return false;

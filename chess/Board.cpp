@@ -51,11 +51,9 @@ Board::Board(Player* player1, Player* player2)
 			case Col::ThirdCol:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
-			/*
 			case Col::ForthCol:
 				_brd[row.first][col] = new Queen(row.second, row.first, col, this);
 				break;
-			*/
 			case Col::FifthCol:
 			{
 				King* kng = new King(row.second, row.first, col, this);

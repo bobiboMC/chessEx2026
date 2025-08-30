@@ -25,7 +25,6 @@ Manager::Manager(Pipe& graphicsPipe)
 	_otherPlayer = nullptr;
 
 	_brd = new Board(_player1, _player2);
-	//_brd->print();
 	_pipe = graphicsPipe;
 
 }
@@ -39,7 +38,6 @@ Manager::Manager()
 	_otherPlayer = nullptr;
 
 	_brd = new Board(_player1, _player2);
-	//_brd->print();
 }
 
 bool Manager::isValidMove(int code) const
