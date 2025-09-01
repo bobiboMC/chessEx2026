@@ -1,11 +1,11 @@
 #include "NullPiece.h"
 
-NullPiece::NullPiece(int row, int col) : Piece(NULL, '#', row, col, NULL)
+NullPiece::NullPiece(int row, int col) : Piece(nullptr, '#', row, col, nullptr)
 {
 
 }
 
 bool NullPiece::isLegalMove(int row, int col) const
 {
-	return true;
+	return false;
 }

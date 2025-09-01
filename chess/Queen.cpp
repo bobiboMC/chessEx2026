@@ -5,7 +5,18 @@ Queen::Queen(Player* player, int row, int col, Board* brd): Piece(player, 'q', r
 {
 }
 
-bool Queen::isLegalMove(int, int) const
+bool Queen::isLegalMove(int dstRow, int dstCol) const
 {
-    return false;
+	int distRows = dstRow - _row;
+	int distCols = dstCol - _col;
+	int absDistRows = std::abs(distRows);
+	int absDistCols = std::abs(distCols);
+	bool isDiagonal = absDistRows == absDistCols;
+	//	Queen can only move on same column, same row or same diagonal
+	if (_col == dstCol || _row == dstRow || isDiagonal) {
+		// Queen can move safely
+		if (isWayFree(dstRow, dstCol))
+			return true;
+	}
+	return false;
 }

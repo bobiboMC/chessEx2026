@@ -7,10 +7,10 @@
 using namespace std;
 
 #define VALID_MOVE 0
-#define VALID_CHESS_MOVE 1
+#define VALID_CHECK_MOVE 1
 #define INVALID_NOT_YOUR_PLAYER 2
 #define INVALID_DEST_NOT_FREE 3
-#define INVALID_CHESS_WILL_OCCURE 4
+#define INVALID_CHECK_WILL_OCCURE 4
 #define INVALID_OUT_OF_BOUNDS 5
 #define INVALID_ILLEGAL_MOVE 6
 #define INVALID_SRC_AND_DEST_EQUAL 7
@@ -25,7 +25,6 @@ Manager::Manager(Pipe& graphicsPipe)
 	_otherPlayer = nullptr;
 
 	_brd = new Board(_player1, _player2);
-	//_brd->print();
 	_pipe = graphicsPipe;
 
 }
@@ -39,7 +38,6 @@ Manager::Manager()
 	_otherPlayer = nullptr;
 
 	_brd = new Board(_player1, _player2);
-	//_brd->print();
 }
 
 bool Manager::isValidMove(int code) const
@@ -99,23 +97,23 @@ int Manager::playMove(string move)
 	// Make the move!
 	_brd->Move(srcRow, srcCol, dstRow, dstCol);
 
-	// check for chess
-	if (_currPlayer->getKing()->isChess())
+	// check for king check
+	if (_currPlayer->getKing()->inCheck())
 	{
 		_brd->print();
 		// if chess undo the last move
 		_brd->undoLastMove();
 
-		return INVALID_CHESS_WILL_OCCURE;
+		return INVALID_CHECK_WILL_OCCURE;
 	}
 
 
 
 	int res;
-	// after move check if it is chess
-	if (_otherPlayer->getKing()->isChess())
+	// after move check if king is in check
+	if (_otherPlayer->getKing()->inCheck())
 	{
-		res = VALID_CHESS_MOVE;
+		res = VALID_CHECK_MOVE;
 	}
 	else
 	{

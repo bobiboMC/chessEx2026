@@ -4,7 +4,18 @@ Bishop::Bishop(Player* player, int row, int col, Board* brd): Piece(player, 'b',
 {
 }
 
-bool Bishop::isLegalMove(int, int) const
+bool Bishop::isLegalMove(int dstRow, int dstCol) const
 {
+	int distRows = dstRow - _row;
+	int distCols = dstCol - _col;
+	int absDistRows = std::abs(distRows);
+	int absDistCols = std::abs(distCols);
+	bool isJumpLegal = absDistRows == absDistCols;
+	//	Bishops can only move on diagonal
+	if (isJumpLegal) {
+		// Bishops can move safely
+		if (isWayFree(dstRow, dstCol))
+			return true;
+	}
 	return false;
 }
