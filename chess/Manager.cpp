@@ -149,6 +149,9 @@ void Manager::playGame()
 			// should handle the string the sent from cli
 			// according the protocol. Ex: e2e4           (move e2 to e4)
 			int r = playMove(msgFromCli);
+			//checking for mate
+			if (r == VALID_CHECK_MOVE && _currPlayer->getKing()->isMate())
+				r = CHECK_MATE;
 			msgFromCli[0] = (char)(r + '0');
 			msgFromCli[1] = '\0';
 
