@@ -1,6 +1,8 @@
 #include "King.h"
 #include <cctype>
 #include "Knight.h"
+
+
 King::King(Player* player, int row, int col, Board* brd) : Piece(player, 'k', row, col, brd)
 {
 }
@@ -32,6 +34,7 @@ bool King::inCheck()
 			int distCols = col - _col;
 			int absDistRows = std::abs(distRows);
 			int absDistCols = std::abs(distCols);
+			bool isOneSquareDiagonal = (absDistRows == 1 && absDistCols == 1);
 			// check if the piece is owned by the other player
 			// also check if piece is not NullPiece
 			if (currPiece->getPlayer() && currPiece->getPlayer()->isWhite() != getPlayer()->isWhite())
@@ -61,7 +64,36 @@ bool King::inCheck()
 						return true;
 				}
 
+				//if Pawns doing check
+				else if (isOneSquareDiagonal) {
+					if (std::tolower(currPiece->getSign()) == 'p')
+						return true;
+				}
+
 			}
 	}
 	return false;
+}
+
+bool King::isMate()
+{
+	const int ROW_BEFORE = _row - 1 >= Board::FirstRow ? _row - 1 : Board::FirstRow;
+	const int ROW_AFTER = _row + 1 < BOARD_SIZE ? _row + 1 : BOARD_SIZE - 1;
+	const int col_BEFORE = _col - 1 >= Board::FirstCol ? _col - 1 : Board::FirstCol;
+	const int col_AFTER = _col + 1 < BOARD_SIZE ? _col + 1 : BOARD_SIZE - 1;
+	for (int row = ROW_BEFORE; row <= ROW_AFTER; row++)
+		for (int col = ROW_BEFORE; col <= ROW_AFTER; col++)
+			// if player's king can move into square to evade check
+			if (!_brd->isPieceOfPlayer(row, col, this->getPlayer()))
+			{
+				_brd->Move(_row, _col, row, col);
+				// if even one square safe then it's not mate
+				if (!this->inCheck()) {
+					_brd->undoLastMove();
+					return false;
+				}
+				_brd->undoLastMove();
+			}
+	return true;
+
 }
