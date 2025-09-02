@@ -3,21 +3,21 @@
 #include <iostream>
 #include <thread>
 
-using namespace std;
+
+
 
 void runGraphics()
 {
 
-	system("start \"\" \"FixChessGui.exe\"");
+	system("..\\gui\\FixChessGui\\bin\\Debug\\net8.0-windows\\FixChessGui.exe");
 
 }
 int main()
 {
-	srand(time_t(NULL));
 
-	//thread t(runGraphics);
-	//t.detach();
-	Sleep(1000);
+	thread t(runGraphics);
+	t.detach();
+	Sleep(3000);
 
 	Pipe p;
 	bool isConnect = p.connect();

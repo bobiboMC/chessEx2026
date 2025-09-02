@@ -26,14 +26,14 @@ public:
 
 
 	enum Col {
-		FirstCol = 0,
-		SecondCol,
-		ThirdCol,
-		ForthCol,
-		FifthCol,
-		SixthCol,
-		SeventhCol,
-		EighthCol,
+		A_Col = 0,
+		B_Col,
+		C_Col,
+		D_Col,
+		E_Col,
+		F_Col,
+		G_Col,
+		H_Col,
 	};
 	Board(Player*, Player*);
 	~Board();

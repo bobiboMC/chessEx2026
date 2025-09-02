@@ -40,32 +40,32 @@ Board::Board(Player* player1, Player* player2)
 		for (int col = 0; col < BOARD_SIZE; col++)
 		{
 			switch (col) {
-			case Col::FirstCol:
+			case Col::A_Col:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
 				break;
-			case Col::SecondCol:
+			case Col::B_Col:
 				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
-			case Col::ThirdCol:
+			case Col::C_Col:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;
-			case Col::ForthCol:
+			case Col::D_Col:
 				{
 					King* kng = new King(row.second, row.first, col, this);
 					_brd[row.first][col] = kng;
 					row.second->setKing(kng);
 					break;
 				}
-			case Col::FifthCol:
+			case Col::E_Col:
 				_brd[row.first][col] = new Queen(row.second, row.first, col, this);
 				break;
-			case Col::SixthCol:
-				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
-				break;		
-			case Col::SeventhCol:
+			case Col::F_Col:
 				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
+				break;		
+			case Col::G_Col:
+				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
-			case Col::EighthCol:
+			case Col::H_Col:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
 				break;
 			default:
@@ -123,10 +123,10 @@ bool Board::isPieceOfPlayer(int row, int col, Player* player) const
 	char squareSign;
 	squareSign = _brd[row][col]->getSign();
 	//white piece
-	if (player->isWhite() && std::isupper(squareSign))
+	if (player && player->isWhite() && std::isupper(squareSign))
 		return true;
 	//black piece
-	else if (!player->isWhite() && std::islower(squareSign))
+	else if (player && !player->isWhite() && std::islower(squareSign))
 		return true;
 
 	return false;
