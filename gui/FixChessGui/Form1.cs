@@ -125,7 +125,7 @@ namespace chessGraphics
             int currentHeight = btnBoard.Location.Y;
             
             bool isColBlack = true;
-            bool isRowBlack = true ;
+            bool isRowBlack = false ;
             
             this.SuspendLayout();
 
