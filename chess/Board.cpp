@@ -44,26 +44,26 @@ Board::Board(Player* player1, Player* player2)
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);
 				break;
 			case Col::SecondCol:
-				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
+				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;
 			case Col::ThirdCol:
-				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
+				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;
 			case Col::ForthCol:
+				{
+					King* kng = new King(row.second, row.first, col, this);
+					_brd[row.first][col] = kng;
+					row.second->setKing(kng);
+					break;
+				}
+			case Col::FifthCol:
 				_brd[row.first][col] = new Queen(row.second, row.first, col, this);
 				break;
-			case Col::FifthCol:
-			{
-				King* kng = new King(row.second, row.first, col, this);
-				_brd[row.first][col] = kng;
-				row.second->setKing(kng);
-				break;
-			}
 			case Col::SixthCol:
-				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
+				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
 				break;		
 			case Col::SeventhCol:
-				_brd[row.first][col] = new Knight(row.second, row.first, col, this);
+				_brd[row.first][col] = new Bishop(row.second, row.first, col, this);
 				break;
 			case Col::EighthCol:
 				_brd[row.first][col] = new Rook(row.second, row.first, col, this);

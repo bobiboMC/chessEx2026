@@ -130,41 +130,40 @@ void Manager::playGame()
 	_currPlayer = _player2;
 	_otherPlayer = _currPlayer == _player1 ? _player2 : _player1;
 
-	char msgToCli[66];
-	string msgFromCli = "";
+	char msgToGraphics[66];
 
 	try {
-		_brd->getString(msgToCli);
-		msgToCli[64] = _currPlayer->isWhite() ? '0' : '1';
-		msgToCli[65] = 0;
+		_brd->getString(msgToGraphics);
+		msgToGraphics[64] = _currPlayer->isWhite() ? '0' : '1';
+		msgToGraphics[65] = 0;
+
+		_pipe.sendMessageToGraphics(msgToGraphics);   // send the board string
 
 		_brd->print();
 
-		// get message from cli
-		std::cout << (_currPlayer->isWhite()?"White":"Black") << " Player" << std::endl;
-		std::cout << "Please input a move" << std::endl;
-		std::cin >> msgFromCli;
-		while (msgFromCli != "quit")
-		{
-			// should handle the string the sent from cli
-			// according the protocol. Ex: e2e4           (move e2 to e4)
-			int r = playMove(msgFromCli);
-			//checking for mate
-			if (r == VALID_CHECK_MOVE && _currPlayer->getKing()->isMate())
-				r = CHECK_MATE;
-			msgFromCli[0] = (char)(r + '0');
-			msgFromCli[1] = '\0';
+		// get message from graphics
+		string msgFromGraphics = _pipe.getMessageFromGraphics();
 
-			
-			if (!isValidMove(r))
-				std::cout << r << std::endl;
+		while (msgFromGraphics != "quit")
+		{
+			// should handle the string the sent from graphics
+			// according the protocol. Ex: e2e4           (move e2 to e4)
+			int r = playMove(msgFromGraphics);
+			if (r == VALID_CHECK_MOVE && _currPlayer->getKing()->isMate())
+			{
+				r = CHECK_MATE;
+			}
+			msgToGraphics[0] = (char)(r + '0');
+			msgToGraphics[1] = 0;
+
+			// return result to graphics		
+			_pipe.sendMessageToGraphics(msgToGraphics);
+
 
 			_brd->print();
 
-			/// get message from cli
-			std::cout << (_currPlayer->isWhite() ? "White" : "Black") << " Player Please input a move" << std::endl;
-			std::cout << "Please input a move" << std::endl;
-			std::cin >> msgFromCli;
+			// get message from graphics
+			msgFromGraphics = _pipe.getMessageFromGraphics();
 		}
 	}
 	catch (exception e)

@@ -82,7 +82,7 @@ bool King::isMate()
 	const int col_BEFORE = _col - 1 >= Board::FirstCol ? _col - 1 : Board::FirstCol;
 	const int col_AFTER = _col + 1 < BOARD_SIZE ? _col + 1 : BOARD_SIZE - 1;
 	for (int row = ROW_BEFORE; row <= ROW_AFTER; row++)
-		for (int col = ROW_BEFORE; col <= ROW_AFTER; col++)
+		for (int col = col_BEFORE; col <= col_AFTER; col++)
 			// if player's king can move into square to evade check
 			if (!_brd->isPieceOfPlayer(row, col, this->getPlayer()))
 			{
@@ -92,6 +92,7 @@ bool King::isMate()
 					_brd->undoLastMove();
 					return false;
 				}
+				
 				_brd->undoLastMove();
 			}
 	return true;
