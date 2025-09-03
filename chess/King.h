@@ -18,5 +18,5 @@ public:
 	bool isMate();
 
 private:
-
+	bool closeToOppKing(int dstRow, int dstCol) const;
 };

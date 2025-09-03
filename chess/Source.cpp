@@ -9,14 +9,16 @@
 void runGraphics()
 {
 
-	system("..\\gui\\FixChessGui\\bin\\Debug\\net8.0-windows\\FixChessGui.exe");
+	//system("..\\gui\\FixChessGui\\bin\\Debug\\net8.0-windows\\FixChessGui.exe");
+	system("start ..\\gui\\FixChessGui\\bin\\Debug\\net8.0-windows\\FixChessGui.exe");
 
 }
 int main()
 {
 
-	thread t(runGraphics);
-	t.detach();
+	//thread t(runGraphics);
+	//t.detach();
+	runGraphics();
 	Sleep(3000);
 
 	Pipe p;

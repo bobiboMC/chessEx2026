@@ -16,9 +16,9 @@ bool King::isLegalMove(int dstRow, int dstCol) const
 	int absDistRows = std::abs(distRows);
 	int absDistCols = std::abs(distCols);
 	int isJumpBigger = (absDistRows > King::MAX_JUMP_KING || absDistCols > King::MAX_JUMP_KING);
-	if (!isJumpBigger)
-		return true;
-	return false;
+	if (isJumpBigger || closeToOppKing(dstRow, dstCol))
+		return false;
+	return true;
 }
 
 bool King::inCheck()
@@ -129,5 +129,25 @@ bool King::isMate()
 			
 	return true;
 
+}
+
+bool King::closeToOppKing(int dstRow, int dstCol) const
+{
+	// King cannot move to square close to opponent's King (distance = 1)
+	Piece** matBoard = _brd->getBoard();
+	Piece* currPiece = nullptr;
+	const int ROW_BEFORE = std::max(dstRow - 1, static_cast<int>(Board::FirstRow));
+	const int ROW_AFTER = std::min(dstRow + 1, static_cast<int>(BOARD_SIZE - 1));
+	const int COL_BEFORE = std::max(dstCol - 1, static_cast<int>(Board::A_Col));
+	const int COL_AFTER = std::min(dstCol + 1, static_cast<int>(BOARD_SIZE - 1));
+	for (int row = ROW_BEFORE; row <= ROW_AFTER; row++)
+	{
+		for (int col = COL_BEFORE; col <= COL_AFTER; col++) {
+			currPiece = *(matBoard + row * BOARD_SIZE + col);
+			if (currPiece != this && std::tolower(currPiece->getSign()) == 'k')
+				return true;
+		}
+	}
+	return false;
 }
 
