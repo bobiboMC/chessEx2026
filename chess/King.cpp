@@ -1,6 +1,5 @@
 #include "King.h"
 #include <cctype>
-#include "Knight.h"
 
 
 King::King(Player* player, int row, int col, Board* brd) : Piece(player, 'k', row, col, brd)
@@ -37,36 +36,36 @@ bool King::inCheck()
 			bool isOneSquareDiagonal = (absDistRows == 1 && absDistCols == 1);
 			// check if the piece is owned by the other player
 			// also check if piece is not NullPiece
-			if (currPiece->getPlayer() && currPiece->getPlayer()->isWhite() != getPlayer()->isWhite())
+			if (!_brd->isPieceOfPlayer(row, col, this->getPlayer()))
 			{
 				//if Queen doing check
-				if ((_row == row || _col == col || absDistCols == absDistRows) && isWayFree(row, col))
+				if (std::tolower(currPiece->getSign()) == 'q')
 				{
-					if (std::tolower(currPiece->getSign()) == 'q')
+					if (currPiece->isLegalMove(_row, _col))
 						return true;
 				}
 				//if Rooks doing check
-				if (_row == row || _col == col)
+				if (std::tolower(currPiece->getSign()) == 'r')
 				{
-					if (std::tolower(currPiece->getSign()) == 'r' && isWayFree(row, col))
+					if (currPiece->isLegalMove(_row, _col))
 						return true;
 				}
 				//if Bishops doing check
-				if (absDistCols == absDistRows && isWayFree(row, col))
+				if (std::tolower(currPiece->getSign()) == 'b')
 				{
-					if (std::tolower(currPiece->getSign()) == 'b')
+					if (currPiece->isLegalMove(_row, _col))
 						return true;
 				}
 				//if Knights doing check
-				else if (absDistCols + absDistRows == Knight::SUM_DIST_ROW_COL && absDistRows != 0 && absDistCols != 0)
+				else if (std::tolower(currPiece->getSign()) == 'n')
 				{
-					if (std::tolower(currPiece->getSign()) == 'n')
+					if (currPiece->isLegalMove(_row, _col))
 						return true;
 				}
 
 				//if Pawns doing check
-				else if (isOneSquareDiagonal) {
-					if (std::tolower(currPiece->getSign()) == 'p')
+				else if (std::tolower(currPiece->getSign()) == 'p') {
+					if (isOneSquareDiagonal)
 						return true;
 				}
 
@@ -75,14 +74,39 @@ bool King::inCheck()
 	return false;
 }
 
+
+bool King::defendCheck(int defendedRow, int defendedCol)
+{
+	Piece** matBoard = _brd->getBoard();
+	Piece* currPiece = nullptr;
+	for (int row = 0; row < BOARD_SIZE; row++) {
+		for (int col = 0; col < BOARD_SIZE; col++)
+		{
+			currPiece = *(matBoard + row * BOARD_SIZE + col);
+			// must be the defender pieces for defending and legality of the move
+			if (currPiece != this && _brd->isPieceOfPlayer(row, col, this->getPlayer()) && currPiece->isLegalMove(defendedRow, defendedCol)) {
+				_brd->Move(row, col, defendedRow, defendedCol);
+				if (this->inCheck()) {
+					_brd->undoLastMove();
+				}
+				else {
+					_brd->undoLastMove();
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool King::isMate()
 {
 	const int ROW_BEFORE = _row - 1 >= Board::FirstRow ? _row - 1 : Board::FirstRow;
 	const int ROW_AFTER = _row + 1 < BOARD_SIZE ? _row + 1 : BOARD_SIZE - 1;
-	const int col_BEFORE = _col - 1 >= Board::FirstCol ? _col - 1 : Board::FirstCol;
+	const int col_BEFORE = _col - 1 >= Board::A_Col ? _col - 1 : Board::A_Col;
 	const int col_AFTER = _col + 1 < BOARD_SIZE ? _col + 1 : BOARD_SIZE - 1;
 	for (int row = ROW_BEFORE; row <= ROW_AFTER; row++)
-		for (int col = ROW_BEFORE; col <= ROW_AFTER; col++)
+		for (int col = col_BEFORE; col <= col_AFTER; col++) {
 			// if player's king can move into square to evade check
 			if (!_brd->isPieceOfPlayer(row, col, this->getPlayer()))
 			{
@@ -92,8 +116,18 @@ bool King::isMate()
 					_brd->undoLastMove();
 					return false;
 				}
+
 				_brd->undoLastMove();
 			}
+			// check if other pieces can defend from check
+			// not including king itself
+			if (defendCheck(row, col)) {
+				return false;
+
+			}
+		}
+			
 	return true;
 
 }
+

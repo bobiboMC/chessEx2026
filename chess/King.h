@@ -14,6 +14,7 @@ public:
 	King(Player*, int row, int col, Board*);
 	virtual bool isLegalMove(int, int) const;
 	bool inCheck();
+	bool defendCheck(int, int);
 	bool isMate();
 
 private:
